@@ -90,6 +90,10 @@ for group_name in reports:
         lease_available: int = lease_total - lease_used
         rows.append([range_start, range_end, lease_total, lease_available, lease_used])
 
+    if not os.path.exists(reports_path):
+        logger.info(f'Creating reports directory at {reports_path}')
+        os.makedirs(reports_path)
+
     logger.info(f'Saving group report for {group_name} to {report_path}')
 
     with open(report_path, 'w') as f:
