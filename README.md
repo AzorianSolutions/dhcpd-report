@@ -15,6 +15,8 @@ pip install -r requirements.txt
 Place your `dhcpd.conf`, `dhcpd.leases`, and other related configuration files in subdirectories of `./data`
 and run `./toolio.py`.
 
+If you wish to only import active DHCP leases, then specify the `-a` flag when calling `toolio.py`.
+
 The script will generate a CSV report for each subdirectory of `./data` and save the
 file to the `./reports` directory.
 
