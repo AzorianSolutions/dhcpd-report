@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import csv
 import os
+import re
 import socket
 import struct
-import re
+import sys
 from isc_dhcp_leases import IscDhcpLeases
 from loguru import logger
 from pathlib import Path
@@ -43,7 +44,7 @@ for group_name in config_groups:
         if str(config_name).endswith('.leases'):
             logger.info(f'Leases file found: {config_name}')
             parser = IscDhcpLeases(config[0])
-            leases = parser.get_current()
+            leases = parser.get_current() if '-a' in sys.argv else parser.get()
 
             logger.info(f'Found {len(leases)} leases in file.')
 
