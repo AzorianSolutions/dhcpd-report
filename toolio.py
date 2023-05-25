@@ -9,6 +9,9 @@ from isc_dhcp_leases import IscDhcpLeases
 from loguru import logger
 from pathlib import Path
 
+# Active lease filtering switch
+active_only: bool = '-a' in sys.argv
+
 # Data path containing configuration groups
 data_path = Path(__file__).parent / 'data'
 
@@ -44,7 +47,7 @@ for group_name in config_groups:
         if str(config_name).endswith('.leases'):
             logger.info(f'Leases file found: {config_name}')
             parser = IscDhcpLeases(config[0])
-            leases = parser.get_current() if '-a' in sys.argv else parser.get()
+            leases = parser.get_current() if active_only else parser.get()
 
             logger.info(f'Found {len(leases)} leases in file.')
 
@@ -76,7 +79,7 @@ for group_name in lease_queue:
                     report[0] += 1
 
 for group_name in reports:
-    report_path = reports_path / str(group_name + '.csv')
+    report_path = reports_path / str(group_name + ('-active' if active_only else '') + '.csv')
     rows = [['Range Start', 'Range End', 'Total', 'Available', 'Used']]
 
     logger.info(f'Building group report for {group_name}...')
